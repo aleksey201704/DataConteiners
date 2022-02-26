@@ -122,8 +122,8 @@ public:
 			Element* Temp = Head;
 			for (int i = 0; i < index - 1; i++) Temp = Temp->pNext;
 //========================================= 
-			Element* ToDel = Temp->pNext; // Запутался в связи с элементами ??????????
-			Temp->pNext = ToDel->pNext;  // Как устанавливается связь между элементами?????????
+			Element* ToDel = Temp->pNext; 
+			Temp->pNext = ToDel->pNext;  
 
 			delete ToDel; 
 			//------------------
@@ -131,13 +131,7 @@ public:
 		}	
 	}
 
-	void Move(int index,int indexM) 
-	{
-		Element* Temp = Head;
-		for (int i = 0; i < index - 1; i++) Temp = Temp->pNext;
-
-
-	}
+	
 };
 	
 
