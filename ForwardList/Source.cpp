@@ -1,6 +1,8 @@
 ﻿//ForwardLISt
 
 #include <iostream>
+#include <vector>
+#include <list>
 using namespace std;
 
 namespace std {
@@ -303,9 +305,10 @@ public:
 	{
 		int* NewMassiv = new int[size];
 		Element* Temp = Head;
+		Element* DelTemp = Head;
 		int r = 0,t=0,s=size;
 		int NumDel = 0;
-
+			
 		for (int i = 0; i < size; i++) 
 		{
 			NewMassiv[i] = Temp->Data; // переписал в массив
@@ -313,29 +316,25 @@ public:
 		}
 
 		Temp=Head;
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < size; i++) // Перебираем ForwardLIst
 		{
-			for (int j = 0; j < s; j++)
+			for (int j = 0; j < s; j++) // Перебираем массив
 			{
 				if (NewMassiv[j]==Temp->Data) r++;
-				if (r > 1) 
+
+				if (r > 1)				// Если больше совпадений то есть одинаковые
 				{ 
 					NumDel = Temp->Data; // Запомнил число для удаления;
-					Temp = Head;
-					for (int de = 0; de < s; de++) 
-					{
-						if (Temp->Data == NumDel) { 
-							erase(t); // Удаляем эелемент
-							Temp = Head;
-							t = 0;
-							}
-						t++;
-						Temp = Temp->pNext;
-					}
-
 				}
 			}
-			//cout << "r: \t" << r <<" Number: \t"<<Temp->Data<< endl;
+			// Удаляем все Совпадения
+			for (int i = 0; i < size; i++) 
+			{ 
+				if (DelTemp->Data == NumDel) erase(i); 
+				DelTemp = DelTemp->pNext;
+			}
+
+
 			if (r > 1) cout << "Есть совпадения";
 			r = 0;
 			Temp = Temp->pNext;
@@ -362,6 +361,7 @@ void main()
 	ForwardList list2 = { 34,5,89 };
 	ForwardList list3 = list1 + list2;
 	
+
 	list3.print();
 	//list3.revers();
 	list3.uniqe();
