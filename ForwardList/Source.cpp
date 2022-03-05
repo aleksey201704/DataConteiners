@@ -5,13 +5,6 @@
 #include <list>
 using namespace std;
 
-namespace std {
-	template <typename _CharT, typename _Traits>
-	inline basic_ostream<_CharT, _Traits>&
-		tab(basic_ostream<_CharT, _Traits>& __os) {
-		return __os.put(__os.widen('\t'));
-	}
-}
 
 class ForwardList;
 
@@ -114,6 +107,16 @@ class ForwardList
 public:
 	Element* getHead()const { return Head; }
 	unsigned int get_size()const { return size;}
+	
+	Iterator begin()
+	{
+		return Head;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
+
 	ForwardList()
 	{
 		Head = nullptr;
@@ -204,16 +207,6 @@ public:
 	}
 	//				Methods:
 
-	void revers() {	
-		Element* Temp = Head;
-		for (int j = 0; j < size - 1; j++)
-		{
-			for (int i = 0; i < size - 1; i++)	Temp = Temp->pNext;
-			(j==0) ? push_front(Temp->Data): insert(j, Temp->Data);
-			pop_back();
-			Temp = Head;
-		}
-	}
 
 	void print()
 	{
@@ -278,7 +271,6 @@ public:
 		size--;
 	}
 
-	
 	void erase(int index) {
 		
 		if (index == Head->count - 1) return pop_back();
@@ -301,46 +293,48 @@ public:
 					
 	}
 
-	void uniqe()
-	{
-		int* NewMassiv = new int[size];
-		Element* Temp = Head;
-		Element* DelTemp = Head;
-		int r = 0,t=0,s=size;
-		int NumDel = 0;
-			
-		for (int i = 0; i < size; i++) 
+	void revers() {	
+		/*Element* Temp = Head;
+		for (int j = 0; j < size - 1; j++)
 		{
-			NewMassiv[i] = Temp->Data; // переписал в массив
-			Temp = Temp->pNext;
-		}
+			for (int i = 0; i < size - 1; i++)	Temp = Temp->pNext;
+			(j==0) ? push_front(Temp->Data): insert(j, Temp->Data);
+			pop_back();
+			Temp = Head;
+		}*/
 
-		Temp=Head;
-		for (int i = 0; i < size; i++) // Перебираем ForwardLIst
+		ForwardList revers_list;
+		while (Head)
 		{
-			for (int j = 0; j < s; j++) // Перебираем массив
-			{
-				if (NewMassiv[j]==Temp->Data) r++;
-
-				if (r > 1)				// Если больше совпадений то есть одинаковые
-				{ 
-					NumDel = Temp->Data; // Запомнил число для удаления;
-				}
-			}
-			// Удаляем все Совпадения
-			for (int i = 0; i < size; i++) 
-			{ 
-				if (DelTemp->Data == NumDel) erase(i); 
-				DelTemp = DelTemp->pNext;
-			}
-
-
-			if (r > 1) cout << "Есть совпадения";
-			r = 0;
-			Temp = Temp->pNext;
+			revers_list.push_front(Head->Data);
+			pop_front();
 		}
+		Head = revers_list.Head;
+		revers_list.Head = nullptr;
+
 	}
-	
+
+	void unique()
+	{
+		for (Element* Temp=Head; Temp->pNext;Temp=Temp->pNext)
+		{
+			for (Element* Temp2 = Temp; Temp2->pNext; Temp2 = Temp2->pNext)
+			{
+
+				if (Temp->Data == Temp2->pNext->Data) 
+				{
+					Element* Erased = Temp2->pNext;
+					Temp2->pNext=Temp2->pNext->pNext;
+					delete Erased;
+					size--;
+					Temp2 = Temp;
+				}
+				
+				
+			}
+		}
+		cout << "----------------------" << endl;
+	}
 };
 	
 ForwardList operator+(const ForwardList& left, const ForwardList& right)
@@ -352,29 +346,65 @@ ForwardList operator+(const ForwardList& left, const ForwardList& right)
 	return cat;
 }
 
+//#define UNIQUE_CHECK
+//#define REVERS_CHECK
+//#define RANGE-BASED FOR ARRAY
 
+#define tab  "\t"
 
 void main()
 {
 	setlocale(LC_ALL, "");
+
+#ifdef REVERS_CHECK
+
 	ForwardList list1 = { 3,5,5,13,21 };
 	ForwardList list2 = { 34,5,89 };
 	ForwardList list3 = list1 + list2;
+	list3.print();
+	list3.revers();
+	list3.print();
+
+#endif // REVERS_CHECK
+
+#ifdef UNIQUE_CHECK
+	int n;
+	cout << "Веедите размер Списка "; cin >> n;
+	ForwardList list;
+	for (int i = 0; i < n; i++)
+	{
+		//list.push_front(rand() % 100);
+		list.push_back(rand() % 10);
+	}
+	list.print();
+	list.unique();
+	list.print();
+
+#endif // UNIQUE_CHECK
+
+#ifdef RANGE-BASED FOR ARRAY
+
+	int arr[] = { 3,5,4,3,2 };
+	for (int i = 0; i < sizeof(arr)/sizeof(int); i++)
+	{
+		cout << arr[i] << tab;
+	}
+	cout << endl;
 	
+	//range-based for
+	for (int i : arr )
+	{
+		cout << arr[i] << tab;
+	}
+#endif // RANGE-BASED FOR ARRAY
 
-	list3.print();
-	//list3.revers();
-	list3.uniqe();
-	list3.print();
+	ForwardList list = { 1,3,4,9,33 };
+		for (int i : list) 
+		{
+			cout << i << tab;
+		}
+		cout << endl;
 
-	//int n;
-	//cout << "Веедите размер Списка "; cin >> n;
-	//ForwardList list;
-	//for (int i = 0; i < n; i++)
-	//{
-	//	//list.push_front(rand() % 100);
-	//	list.push_back(rand() % 100);
-	//}
 	//int index;
 	////int value;
 	//list.print();
