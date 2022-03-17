@@ -20,6 +20,11 @@ int factorial(int n)
 	return n * factorial(n - 1);
 
 }
+double power(double a, int n)
+{
+	if (n == 1) return a;
+	if (n != 1) return a * power(a, n - 1);
+}
 	
 void main()
 {
@@ -27,11 +32,16 @@ void main()
 	//cout << "Hello";
 	//main();
 	int floor;
-	int F;
+	int F,n;
+	double a;
 	/*cout << "ВВедите на какой этаж: "; cin >> floor;
 	elevator(floor);*/
 
-	cout << "Введите число факториал n!=1*2*n! : "; cin >> F;
-	cout << factorial(F);
+	/*cout << "Введите число факториал n!=1*2*n! : "; cin >> F;
+	cout << factorial(F);*/
+
+	cout << "Введите число A= "; cin >> a;
+	cout << "Введите степень n= "; cin >> n;
+	cout << power(a, n);
 
 }
